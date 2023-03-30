@@ -1,4 +1,4 @@
-ARG MM_VERSION=7.8.1
+ARG MM_VERSION=7.9.1
 FROM alpine:3.16
 
 ARG edition=team
@@ -28,13 +28,22 @@ RUN apk add --no-cache \
 RUN mkdir -p /mattermost/data /mattermost/plugins /mattermost/client/plugins
 
 # Get Mattermost
-RUN curl https://releases.mattermost.com/${MM_VERSION}/mattermost-${edition}-${MM_VERSION}-linux-arm64.tar.gz?src=docker | tar -xvz \
-  && mv /mattermost/config/config.json /config.json.save \
-  && addgroup -g ${PGID} mattermost \
-  && adduser -D -u ${PUID} -G mattermost -h /mattermost -D mattermost \
-  && curl https://raw.githubusercontent.com/mattermost/mattermost-docker-preview/master/config_docker.json -o /mattermost/config/config.json \
-  && chown -R mattermost:mattermost /mattermost /config.json.save /mattermost/plugins /mattermost/client/plugins \
-  && setcap cap_net_bind_service=+ep /mattermost/bin/mattermost
+RUN apkArch="$(apk --print-arch)"; \
+    case "$apkArch" in \
+      x86_64)  export MM_ARCH="amd64" ;; \
+      aarch64) export MM_ARCH="arm64" ;; \
+      armv5*)  export MM_ARCH="arm" ;; \
+      armv6*)  export MM_ARCH="arm" ;; \
+      armv7*)  export MM_ARCH="arm" ;; \
+      *) echo >&2 "error: unsupported architecture ($apkArch)"; exit 1 ;; \
+    esac; \
+    curl -sSL https://releases.mattermost.com/${MM_VERSION}/mattermost-${edition}-${MM_VERSION}-linux-${MM_ARCH}.tar.gz?src=docker | tar -xvz \
+    && mv /mattermost/config/config.json /config.json.save \
+    && addgroup -g ${PGID} mattermost \
+    && adduser -D -u ${PUID} -G mattermost -h /mattermost -D mattermost \
+    && curl https://raw.githubusercontent.com/mattermost/mattermost-docker-preview/master/config_docker.json -o /mattermost/config/config.json \
+    && chown -R mattermost:mattermost /mattermost /config.json.save /mattermost/plugins /mattermost/client/plugins \
+    && setcap cap_net_bind_service=+ep /mattermost/bin/mattermost
 
 USER mattermost
 
