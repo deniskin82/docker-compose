@@ -10,7 +10,7 @@ services:
     tmpfs:
       - /tmp
     environment:
-      - TZ
+      - TZ='America/New_York'
       - MYSQL_ROOT_PASSWORD=admin
       - MYSQL_DATABASE=mattermost
       - MYSQL_USER=mattermost

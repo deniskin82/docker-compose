@@ -6,9 +6,9 @@ services:
     container_name: homeassistant
     network_mode: host
     environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=Etc/UTC
+      PUID: 1000
+      PGID: 1000
+      TZ: 'America/New_York'
     volumes:
       - ./config:/config
     ports:

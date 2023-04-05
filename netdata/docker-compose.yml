@@ -6,10 +6,10 @@ services:
     container_name: netdata
     hostname: docker.home
     environment:
-      - DISABLE_TELEMETRY=1
-      - PUID=1000
-      - PGID=1000
-      - TZ=UTC
+      DISABLE_TELEMETRY: 1
+      PUID: 1000
+      PGID: 1000
+      TZ: 'America/New_York'
     ports:
       - 19999:19999
     volumes:
