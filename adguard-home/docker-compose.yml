@@ -1,5 +1,19 @@
 version: "3"
 services:
+  avahi2dns:
+    network_mode: host
+    build:
+      context: avahi2dns
+      args:
+        PUID: 1000
+        PGID: 1000
+    restart: unless-stopped
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /run/dbus/system_bus_socket:/run/dbus/system_bus_socket
+    ports:
+     - 5454:5454
+
   adguardhome:
     image: adguard/adguardhome
     container_name: adguardhome
@@ -29,6 +43,7 @@ services:
       - 68:68/tcp
       - 68:68/udp
     volumes:
+      - /etc/localtime:/etc/localtime:ro    
       - ./work:/opt/adguardhome/work
       - ./conf:/opt/adguardhome/conf
     restart: unless-stopped
