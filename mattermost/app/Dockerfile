@@ -23,7 +23,7 @@ RUN apk add --no-cache \
     netcat-openbsd \
     xmlsec-dev \
     tzdata \
-    && rm -rf /tmp/*
+    && rm -rf /tmp/* /var/cache/apk/*
 
 RUN mkdir -p /mattermost/data /mattermost/plugins /mattermost/client/plugins
 
