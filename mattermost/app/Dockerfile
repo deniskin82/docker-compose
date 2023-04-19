@@ -1,4 +1,4 @@
-ARG MM_VERSION=7.9.1
+ARG MM_VERSION=7.10.0
 FROM alpine:3.16
 
 ARG edition=team
