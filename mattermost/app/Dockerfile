@@ -37,7 +37,7 @@ RUN apkArch="$(apk --print-arch)"; \
       armv7*)  export MM_ARCH="arm" ;; \
       *) echo >&2 "error: unsupported architecture ($apkArch)"; exit 1 ;; \
     esac; \
-    curl -sSL https://releases.mattermost.com/${MM_VERSION}/mattermost-${edition}-${MM_VERSION}-linux-${MM_ARCH}.tar.gz?src=docker | tar -xvz \
+    curl -sSL https://releases.mattermost.com/${MM_VERSION}/mattermost-${edition}-${MM_VERSION}-linux-${MM_ARCH}.tar.gz?src=docker | tar -xz \
     && mv /mattermost/config/config.json /config.json.save \
     && addgroup -g ${PGID} mattermost \
     && adduser -D -u ${PUID} -G mattermost -h /mattermost -D mattermost \
