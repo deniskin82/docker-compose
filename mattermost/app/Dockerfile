@@ -1,5 +1,5 @@
-ARG MM_VERSION=7.10.0
-FROM alpine:3.16
+ARG MM_VERSION=9.0.1
+FROM alpine:3.18
 
 ARG edition=team
 ARG PUID=${PUID}
