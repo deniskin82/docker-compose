@@ -1,12 +1,12 @@
 version: '3'
 services:
   db:
-    # database with mariadb
-    image: mariadb:10.11
+    # database with mysql
+    image: mysql:8.1
     restart: unless-stopped
     security_opt:
       - no-new-privileges:true
-    pids_limit: 100
+    pids_limit: 200
     tmpfs:
       - /tmp
     environment:
@@ -48,5 +48,6 @@ services:
       - MM_DBNAME=mattermost
       - DB_HOST=db
       - DB_PORT_NUMBER=3306
+      - MM_LOGSETTINGS_CONSOLELEVEL=error
       - MM_SQLSETTINGS_DRIVERNAME=mysql
       - MM_SQLSETTINGS_DATASOURCE=mattermost:mattermost@tcp(db:3306)/mattermost?charset=utf8mb4,utf8

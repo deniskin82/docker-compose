@@ -42,7 +42,7 @@ RUN apkArch="$(apk --print-arch)"; \
     && addgroup -g ${PGID} mattermost \
     && adduser -D -u ${PUID} -G mattermost -h /mattermost -D mattermost \
     && curl https://raw.githubusercontent.com/mattermost/mattermost-docker-preview/master/config_docker.json -o /mattermost/config/config.json \
-    && chown -R mattermost:mattermost /mattermost /config.json.save /mattermost/plugins /mattermost/client/plugins \
+    && chown -cR mattermost:mattermost /mattermost /config.json.save /mattermost/plugins /mattermost/client/plugins \
     && setcap cap_net_bind_service=+ep /mattermost/bin/mattermost
 
 USER mattermost
@@ -52,7 +52,7 @@ HEALTHCHECK --interval=30s --timeout=10s \
   CMD curl -f http://localhost:8065/api/v4/system/ping || exit 1
 
 WORKDIR /mattermost
-CMD ["mattermost"]
+CMD ["mattermost", "--config", "/mattermost/config/config.json"]
 
 # Expose ports of the container
 EXPOSE 8065 8067 8074 8075
